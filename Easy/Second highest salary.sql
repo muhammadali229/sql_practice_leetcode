@@ -1,6 +1,7 @@
 -- Question 15
 -- Write a SQL query to get the second highest salary from the Employee table.
-USE leetcode;
+CREATE DATABASE IF NOT EXISTS second_highest_salary;
+USE second_highest_salary;
 Create table If Not Exists Employee (Id int, Salary int);
 Truncate table Employee;
 insert into Employee (Id, Salary) values ('1', '100');
