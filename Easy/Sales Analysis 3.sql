@@ -1,6 +1,6 @@
 -- Question 34
 -- Table: Product
-
+use sales_analysis;
 -- +--------------+---------+
 -- | Column Name  | Type    |
 -- +--------------+---------+
@@ -57,9 +57,9 @@
 -- The product with id 1 was only sold in spring 2019 while the other two were sold after.
 
 -- Solution
-select distinct a.product_id, product_name from sales a join product b on a.product_id = b.product_id where a.product_id 
-in
-(select product_id from sales where sale_date >= '2019-01-01' and sale_date <= '2019-03-31')
-and
-a.product_id not in 
-(select product_id from sales where sale_date > '2019-03-31' or sale_date < '2019-01-01')
+SELECT s.product_id, product_name
+FROM Sales s
+JOIN Product p
+ON s.product_id = p.product_id
+GROUP BY s.product_id
+HAVING MIN(sale_date) >= '2019-01-01' AND MAX(sale_date) <= '2019-03-31'
