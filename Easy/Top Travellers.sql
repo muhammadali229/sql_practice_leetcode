@@ -1,5 +1,5 @@
 USE leetcode; 
--- Question 1
+
 -- Table: Users
 
 -- +---------------+---------+
