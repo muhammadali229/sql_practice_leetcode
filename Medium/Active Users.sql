@@ -98,6 +98,35 @@ FROM
 	account_active_users
 WHERE
 	id IN (
+		SELECT
+			id
+		FROM 
+			(
+				SELECT
+					id, 
+					login_date,
+					LEAD(login_date, 1) OVER(PARTITION BY id ORDER BY login_date) next_date_1,
+					LEAD(login_date, 2) OVER(PARTITION BY id ORDER BY login_date) next_date_2,
+					LEAD(login_date, 3) OVER(PARTITION BY id ORDER BY login_date) next_date_3,
+					LEAD(login_date, 4) OVER(PARTITION BY id ORDER BY login_date) next_date_4
+				FROM
+					(SELECT DISTINCT login_date, id FROM login_active_users ) AS l
+			) as temp
+		WHERE
+			DATEDIFF(DAY, login_date, next_date_1) = 1 AND
+			DATEDIFF(DAY, login_date, next_date_2) = 2 AND
+			DATEDIFF(DAY, login_date, next_date_3) = 3 AND
+			DATEDIFF(DAY, login_date, next_date_4) = 4
+	)
+
+-- Solution 2
+SELECT
+	id,
+	name
+FROM
+	account_active_users
+WHERE
+	id IN (
 	SELECT 
 		id
 	FROM 
@@ -117,7 +146,7 @@ WHERE
 		COUNT(DISTINCT login_date) = 4
 );
 
--- Solution 2
+-- Solution 3
 SELECT
 	a.id, 
 	name
