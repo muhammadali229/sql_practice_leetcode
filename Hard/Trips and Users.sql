@@ -103,6 +103,7 @@ SELECT
 FROM
 	trips_details_hard
 WHERE
+	request_at BETWEEN '2013-10-01' AND '2013-10-03' AND
 	driver_id NOT IN (SELECT user_id FROM users_details_hard WHERE banned = 'Yes') AND
 	client_id NOT IN (SELECT user_id FROM users_details_hard WHERE banned = 'Yes')
 GROUP BY	
