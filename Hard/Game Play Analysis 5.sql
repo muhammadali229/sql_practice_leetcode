@@ -74,7 +74,7 @@ SELECT
 		CASE	
 			WHEN DATEDIFF(DAY, event_date, next_login_date) = 1 THEN 1 ELSE 0
 		END
-	)AS DECIMAL (10, 2)) / COUNT(*)) Day1_retention
+	) / CAST(COUNT(*) AS FLOAT) AS DECIMAL (10, 2))) Day1_retention
 FROM
 (
 	SELECT
