@@ -111,16 +111,17 @@ WITH student_id_not_in_min_max AS (
 	(
 		SELECT
 			*,
-			RANK() OVER(PARTITION BY exam_id ORDER BY score) rk_score
+			MIN(score) OVER(PARTITION BY exam_id) min_score,
+			MAX(score) OVER(PARTITION BY exam_id) max_score	
 		FROM
-			exam_find_quiet 
+			exam_find_quiet
 	) as temp
-	GROUP BY
+	GROUP BY 
 		student_id
-	HAVING 
+	HAVING
 		SUM(
-			CASE	
-				WHEN rk_score IN (1, 3) THEN 1 ELSE 0
+			CASE 
+				WHEN score IN (min_score, max_score) THEN 1 ELSE 0
 			END
 		) = 0
 )
