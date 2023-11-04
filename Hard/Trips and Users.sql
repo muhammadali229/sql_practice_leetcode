@@ -108,3 +108,19 @@ WHERE
 	client_id NOT IN (SELECT user_id FROM users_details_hard WHERE banned = 'Yes')
 GROUP BY	
 	 request_at
+
+-- Another Solution 
+# Write your MySQL query statement below
+select
+    t.request_at Day,
+    round(sum(
+        case when t.status <> 'completed' then 1 else 0 end
+    ) / count(*), 2) "Cancellation Rate"
+from 
+    trips t inner join users u on t.client_id = u.users_id and u.banned <> 'Yes'
+            inner join users u1 on t.driver_id = u1.users_id and u1.banned <> 'Yes'
+where
+    t.request_at between '2013-10-01' and '2013-10-03'
+group by
+    t.request_at
+order by t.request_at;
