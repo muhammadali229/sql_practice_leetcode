@@ -62,3 +62,23 @@ FROM (
 	ORDER BY salary DESC ) AS temp 
 	ORDER BY 
 		salary;
+
+-- Solution 3
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+    RETURN (
+        SELECT 
+            salary
+        FROM 
+            (
+                SELECT 
+                    salary,
+                    DENSE_RANK() OVER(ORDER BY salary DESC) rn
+                FROM 
+                    employee
+            ) as t
+        WHERE 
+            rn = N
+        limit 1
+    );
+END
