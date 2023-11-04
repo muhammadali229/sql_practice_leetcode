@@ -74,5 +74,28 @@ FROM
 	exchange_seat
 ORDER BY
 	id;
+
+-- Solution 3
+# Write your MySQL query statement below
+with sts as (
+    select
+        id,
+        student,
+        lag(student) over(order by id) p_student,
+        lead(student) over(order by id) n_student,
+        count(*) over() no_of_students
+    from 
+        seat
+)
+
+select 
+    id,
+    case 
+        when id % 2 <> 0 and id <> no_of_students then n_student
+        when id % 2 = 0  then p_student
+        else student
+    end student
+from 
+    sts
 	
 	
